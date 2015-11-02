@@ -34,6 +34,10 @@ public:
 	}
 	bool setr(int R)
 	{
+		if (R < 0)
+		{
+			return false;
+		}
 		radius = R;
 		return true;
 	}
@@ -49,8 +53,11 @@ public:
 	{
 		return radius;
 	}
-	bool check(int x, int y, int radius)
-	{
+	static bool check(int x, int y, int radius)
+	{/*Проверка на вводимые данные с помощью 
+	   уравнения окружности, где x0, y0 - начало координат.
+	   По крайней мере, я так понял проверку
+	 */
 		int x0 = 0;
 		int y0 = 0;
 		if (pow((x - x0), 2) + pow((y - y0), 2) == radius)
@@ -76,9 +83,9 @@ public:
 	{
 		cout << "Circumference: " << 2 * PI * radius << " units" << endl;
 		cout << endl;
-		return PI *pow(radius, 2);
+		return 2 * PI * radius;
 	}
-	void Circle::show()
+	void show()
 	{
 		cout << this->x << "  " << this->y << "  " << this->radius << endl;
 	}
@@ -88,7 +95,6 @@ class ArrayOfCircles
 private: Circle*array[256];
 		 int num = 0;
 public:
-	Circle zz;
 	void add()
 	{
 		
@@ -101,7 +107,7 @@ public:
 			cout << "Please Enter y: "; cin >> Y; cout << endl;
 			cout << "Please Enter R: "; cin >> R; cout << endl;
 			Circle *pp = new Circle;
-			if (zz.check(X, Y, R) == true)
+			if (Circle::check(X, Y, R))
 			{
 				if (pp->setx(X) && pp->sety(Y) && pp->setr(R))
 				{
@@ -144,13 +150,13 @@ public:
 					array[i]->show();
 					cout << "----------" << endl;		
 				}
-				if(array[i]->getx() != a)
+				else if(array[i]->getx() != a)
 				{
 					cout << "Error...." << endl;
 				}
 			}
 		}
-		if (c == 2)
+		else if (c == 2)
 		{
 			cout << "Enter y: "; cin >> a;
 			for (int i = 0; i < num; i++)
@@ -160,7 +166,7 @@ public:
 					array[i]->show();
 					cout << "----------" << endl;
 				}
-				if (array[i]->gety() != a)
+				else if (array[i]->gety() != a)
 				{
 					cout << "Error...." << endl;
 				}
@@ -173,14 +179,12 @@ public:
 		double max = 0;
 		for (int i = 0; i < num; i++)
 		{
-			array[i]->getr();
 			if (array[i]->square() > max)
 			{
 				max = array[i]->square();
-				//cout << "max: " << max << endl;
 			}
 		}
-		cout << "max: " << max <<" square units."<< endl;
+		cout << "Max: " << max <<" square units."<< endl;
 		cout << endl;
 	}
 
@@ -189,7 +193,7 @@ public:
 		cout << "Circumferentially's that located in the first quarter: " << endl;
 		for (int i = 0; i < num; i++)
 		{
-			if (array[i]->getx() && array[i]->gety() >= 0)
+			if (array[i]->getx()>0 && array[i]->gety()>0)
 			{
 
 				array[i]->show();
@@ -205,7 +209,7 @@ public:
 };
 int main(int x,int y,int radius,int count)
 {
-	Circle obj;
+	
 	ArrayOfCircles qq;
 	int flag = 0;
 	for (int i = 0; i < 10; i++)
